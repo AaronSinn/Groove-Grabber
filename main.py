@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait #used for explicit wait
 from selenium.webdriver.support import expected_conditions as EC #used for explicit wait
-import requests
+import requests, shutil, os, sys, datetime
 
 #Finds the fist occurance of a video that is not a YouTube Short
 def find_default_video_link() -> str:
@@ -36,9 +36,14 @@ options.add_argument("start-maximized")
 
 driver = webdriver.Chrome(options=options)
 
+#TODO: use send2trash for deletes
+
 if __name__ == '__main__':
 
-    driver.get('https://www.youtube.com/results?search_query=sabaton+back+in+control')
+    song_name = input(str('enter the song name:\t'))
+    query = song_name.replace(' ', '+')
+
+    driver.get(f'https://www.youtube.com/results?search_query={query}')
     #xpath to the first thumbnail overlay. The overlay is the video length for a normal video and SHROTS for a short
     #ytd-video-renderer[1] is the first video, ytd-video-renderer[2] would be the second.
     overlay_path = '/html/body/ytd-app/div[1]/ytd-page-manager/ytd-search/div[1]/ytd-two-column-search-results-renderer/div/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[3]/ytd-video-renderer[1]/div[1]/ytd-thumbnail/a/div[1]/ytd-thumbnail-overlay-time-status-renderer'
@@ -58,4 +63,20 @@ if __name__ == '__main__':
     driver.find_element(By.ID, 'url-input-area').send_keys(link)
     driver.find_element(By.ID, 'audioMode-true').click() #sets the downlaod mode to mp3
     driver.find_element(By.ID, 'download-button').click()
+
+    try:
+        os.mkdir('Music Folder')
+    except FileExistsError :
+        print('Music Folder alreay exists')
+    
+    #name of the foler for the downloaded song. Will include mp3 and thumbnail jpg
+    song_folder = f'{song_name} - ' + str(datetime.datetime.now()).replace(':', '-')
+    song_folder = song_folder.replace('.', '-')
+    try:
+        os.mkdir(f'Music Folder\\{song_folder}')
+    except FileExistsError:
+        #This should not happen!
+        print('Song folder alreay exists')
+    
+    shutil.move('thumbnail.jpg', f'Music Folder\\{song_folder}')
 
