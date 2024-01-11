@@ -19,14 +19,6 @@ driver = webdriver.Chrome(options=options)
 playlist_title_xpath = '/html/body/ytd-app/div[1]/ytd-page-manager/ytd-browse/ytd-playlist-header-renderer/div/div[2]/div[1]/div/yt-dynamic-sizing-formatted-string/div/yt-formatted-string'
 video_title_xpath = '/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[2]/ytd-watch-metadata/div/div[1]/h1/yt-formatted-string'
 
-# def download_thumbnail(thumbnail_xpath):
-#     image_link = driver.find_element(By.XPATH, thumbnail_xpath).get_attribute('src')
-#     response = requests.get(image_link)
-#     # Check if the request was successful (status code 200)
-#     if response.status_code == 200:
-#         with open("thumbnail.jpg", "wb") as f:
-#             f.write(response.content)
-
 #waits 30 seconds for the file to appear in the downloads folder, returns true if found.
 def is_file_downloaded(file_name, downloads_folder_path) -> bool:
     seconds = 0
@@ -40,3 +32,11 @@ def is_file_downloaded(file_name, downloads_folder_path) -> bool:
         seconds += 1
 
     return False #the file was not found after 30 seconds
+
+# def download_thumbnail(thumbnail_xpath):
+#     image_link = driver.find_element(By.XPATH, thumbnail_xpath).get_attribute('src')
+#     response = requests.get(image_link)
+#     # Check if the request was successful (status code 200)
+#     if response.status_code == 200:
+#         with open("thumbnail.jpg", "wb") as f:
+#             f.write(response.content)

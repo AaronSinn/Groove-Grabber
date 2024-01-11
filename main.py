@@ -4,11 +4,11 @@ from selenium.webdriver.support.ui import WebDriverWait #used for explicit wait
 from selenium.webdriver.support import expected_conditions as EC #used for explicit wait
 import shutil, os, sys, datetime, re
 from pathlib import Path
-
-#TODO: use send2trash for deletes
+import pyperclip
 
 if __name__ == '__main__':
-    driver.get('https://www.youtube.com/playlist?list=PL4Nug3PNiB14vJzz0uF6mGDSt_03qt9N9')
+    playlist_link = pyperclip.paste()
+    driver.get(playlist_link)
     playlist_title = driver.find_element(By.XPATH, playlist_title_xpath).text
     print('playlist title:', playlist_title)
     
@@ -50,7 +50,6 @@ if __name__ == '__main__':
         except FileExistsError :
             print('Music Folder alreay exists')
         
-        
         #removes invalid characters from the video title
         video_title = video_title.replace('.', '-')
         video_title = video_title.replace('\\', '')
@@ -65,15 +64,11 @@ if __name__ == '__main__':
         #name of the folder for the downloaded song. Will include mp3 and thumbnail jpg
         song_folder = f'{playlist_title} - ' + str(datetime.datetime.now()).replace(':', '-').replace('.', '-') 
 
-        #removes invalid characters 
-        
         try:
             os.mkdir(f'Music Folder\{playlist_title}')
         except FileExistsError:
             #This should not happen!
             print('Song folder alreay exists')
-        
-        # shutil.move('thumbnail.jpg', f'Music Folder\{song_folder}')
 
         downloads_path = str(Path.home() / "Downloads") #path to the downloads folder
         song_download_path = f'{downloads_path}\youtube_{video_code}_audio.mp3' #path to the downloaded file.
