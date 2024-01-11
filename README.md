@@ -12,11 +12,11 @@ git clone <repo-url>
 pip3 install -r requirements.txt
 ```
 
-## Running the Script
-
 ## Using the Script
 1. CTRL+C the URL for you youtube playlist
-2.
+2. Watch as the MP3 files appear in your 'Music Folder'
+
+## Running the Script
 ```bash
 python main.py
 ```
